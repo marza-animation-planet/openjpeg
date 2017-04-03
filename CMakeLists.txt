@@ -195,6 +195,11 @@ if(CMAKE_COMPILER_IS_GNUCC)
   set(OPENJPEG_LIBRARY_COMPILE_OPTIONS ${OPENJPEG_LIBRARY_COMPILE_OPTIONS} "$<$<CONFIG:Release>:-ffast-math>")
 endif()
 
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_CLANG)
+  # always compile with -fPIC when using gcc or clang
+  add_definitions("-fPIC")
+endif()
+
 #-----------------------------------------------------------------------------
 # opj_config.h generation (1/2)
 

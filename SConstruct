@@ -37,7 +37,7 @@ env.Alias("openjpeg", target)
 excons.SyncCache()
 
 
-def RequireOpenJpeg(env):
+def RequireOpenjpeg(env):
    env.Append(CPPPATH=[out_incdir])
    env.Append(LIBPATH=[out_libdir])
    if staticbuild:
@@ -49,5 +49,5 @@ def RequireOpenJpeg(env):
    else:
       env.Append(LIBS=["openjp2"])
 
-Export("RequireOpenJpeg")
+Export("RequireOpenjpeg")
 
