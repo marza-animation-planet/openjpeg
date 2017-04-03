@@ -49,5 +49,5 @@ def RequireOpenJpeg(env):
    else:
       env.Append(LIBS=["openjp2"])
 
-export("RequireOpenJpeg")
+Export("RequireOpenJpeg")
 
