@@ -45,7 +45,7 @@ def RequireOpenJpeg(env):
       if sys.platform != "win32":
          excons.StaticallyLink(env, "openjp2", silent=True)
       else:
-         pass
+         env.Append(LIBS=["openjp2"])
    else:
       env.Append(LIBS=["openjp2"])
 
