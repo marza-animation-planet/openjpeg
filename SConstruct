@@ -5,7 +5,7 @@ env = excons.MakeBaseEnv()
 
 out_incdir  = excons.OutputBaseDirectory() + "/include"
 out_libdir  = excons.OutputBaseDirectory() + "/lib"
-staticbuild = (excons.GetArgument("static", 1, int) != 0)
+staticbuild = (excons.GetArgument("openjpeg-static", 1, int) != 0)
 
 prjs = [
    {  "name": "openjpeg",
@@ -20,13 +20,17 @@ prjs = [
                      "BUILD_SHARED_LIBS": (1 if not staticbuild else 0),
                      "BUILD_PKGCONFIG_FILES": 0,
                      "BUILD_TESTING": 0,
-                     "BUILD_CODEC": excons.GetArgument("openjpeg-tools", 0, int), # Requires libpng, libjpeg, libtiff
+                     "BUILD_CODEC": excons.GetArgument("openjpeg-tools", 0, int),
                      "BUILD_THIRDPARTY": 0,
                      "BUILD_VIEWER": 0},
       "cmake-srcs": excons.CollectFiles(["src/bin/common", "src/bin/jp2", "src/lib/openjp2"], patterns=["*.c", "CMakeLists.txt"])
    }
 ]
 
+excons.AddHelpOptions(openjpeg="""CMAKE OPENJPEG OPTIONS
+  openjpeg-static=0|1 : Toggle between static and shared library build [1]
+  openjpeg-tools=0|1  : Build OpenJpeg command line tools              [0]
+                        (requires JPEG, PNG and TIFF libraries)""")
 excons.DeclareTargets(env, prjs)
 
 def RequireOpenjpeg(env):
