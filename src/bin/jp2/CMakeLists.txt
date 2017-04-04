@@ -57,6 +57,13 @@ foreach(exe opj_decompress opj_compress opj_dump)
   # On unix you need to link to the math library:
   if(UNIX)
     target_link_libraries(${exe} m)
+    if(BUILD_SHARED_LIBS)
+      if(APPLE)
+        set_target_properties(${exe} PROPERTIES INSTALL_RPATH "@loader_path/../lib")
+      else()
+        set_target_properties(${exe} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
+      endif()
+    endif()
   endif()
   # Install exe
   install(TARGETS ${exe}
