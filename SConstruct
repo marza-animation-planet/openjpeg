@@ -23,7 +23,8 @@ prjs = [
                      "BUILD_CODEC": excons.GetArgument("openjpeg-tools", 0, int),
                      "BUILD_THIRDPARTY": 0,
                      "BUILD_VIEWER": 0},
-      "cmake-srcs": excons.CollectFiles(["src/bin/common", "src/bin/jp2", "src/lib/openjp2"], patterns=["*.c", "CMakeLists.txt"])
+      "cmake-cfgs": excons.CollectFiles(["src/bin/common", "src/bin/jp2", "src/lib/openjp2"], patterns=["CMakeLists.txt"]),
+      "cmake-srcs": excons.CollectFiles(["src/bin/common", "src/bin/jp2", "src/lib/openjp2"], patterns=["*.c"])
    }
 ]
 
@@ -33,24 +34,24 @@ excons.AddHelpOptions(openjpeg="""CMAKE OPENJPEG OPTIONS
                         (requires JPEG, PNG and TIFF libraries)""")
 excons.DeclareTargets(env, prjs)
 
-def RequireOpenjpeg(env):
-   env.Append(CPPPATH=[out_incdir])
-   env.Append(LIBPATH=[out_libdir])
-   if staticbuild:
-      env.Append(CPPDEFINES=["OPJ_STATIC"])
-      if sys.platform != "win32":
-         excons.StaticallyLink(env, "openjp2", silent=True)
-      else:
-         env.Append(LIBS=["openjp2"])
-   else:
-      env.Append(LIBS=["openjp2"])
 
 def OpenjpegName():
-   if sys.platform == "win32":
-      basename = "openjp2.lib"
-   else:
-      basename = "libopenjp2" + (".a" if staticbuild else ".so")
-   return out_libdir + "/" + basename
+   return "openjp2"
 
-Export("RequireOpenjpeg OpenjpegName")
+def OpenjpegPath():
+   name = OpenjpegName()
+   if sys.platform == "win32":
+      libname = name + ".lib"
+   else:
+      libname = "lib" + name + (".a" if staticbuild else excons.SharedLibraryLinkExt())
+   return out_libdir + "/" + libname
+
+def RequireOpenjpeg(env):
+   if staticbuild:
+      env.Append(CPPDEFINES=["OPJ_STATIC"])
+   env.Append(CPPPATH=[out_incdir])
+   env.Append(LIBPATH=[out_libdir])
+   excons.Link(env, OpenjpegName(), static=staticbuild, force=True, silent=True)
+
+Export("OpenjpegName OpenjpegPath RequireOpenjpeg")
 
