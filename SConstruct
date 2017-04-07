@@ -28,7 +28,7 @@ prjs = [
    }
 ]
 
-excons.AddHelpOptions(openjpeg="""CMAKE OPENJPEG OPTIONS
+excons.AddHelpOptions(openjpeg="""OPENJPEG OPTIONS
   openjpeg-static=0|1 : Toggle between static and shared library build [1]
   openjpeg-tools=0|1  : Build OpenJpeg command line tools              [0]
                         (requires JPEG, PNG and TIFF libraries)""")
