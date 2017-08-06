@@ -6,9 +6,13 @@ env = excons.MakeBaseEnv()
 out_incdir  = excons.OutputBaseDirectory() + "/include"
 out_libdir  = excons.OutputBaseDirectory() + "/lib"
 staticbuild = (excons.GetArgument("openjpeg-static", 1, int) != 0)
+libsuffix = excons.GetArgument("openjpeg-suffix", "")
 
 def OpenjpegName():
-   return "openjp2"
+   name = "openjp2" + libsuffix
+   if sys.platform == "win32" and staticbuild:
+       name = "lib" + name
+   return name
 
 def OpenjpegPath():
    name = OpenjpegName()
@@ -23,7 +27,7 @@ def RequireOpenjpeg(env):
       env.Append(CPPDEFINES=["OPJ_STATIC"])
    env.Append(CPPPATH=[out_incdir])
    env.Append(LIBPATH=[out_libdir])
-   excons.Link(env, OpenjpegName(), static=staticbuild, force=True, silent=True)
+   excons.Link(env, OpenjpegPath(), static=staticbuild, force=True, silent=True)
 
 prjs = [
    {  "name": "openjpeg",
@@ -51,10 +55,10 @@ prjs = [
 ]
 
 excons.AddHelpOptions(openjpeg="""OPENJPEG OPTIONS
-  openjpeg-static=0|1 : Toggle between static and shared library build [1]
-  openjpeg-tools=0|1  : Build OpenJpeg command line tools              [0]
-                        (requires JPEG, PNG and TIFF libraries)""")
+  openjpeg-static=0|1   : Toggle between static and shared library build [1]
+  openjpeg-suffix=<str> : OpenJpeg Library name suffix                   ['']
+  openjpeg-tools=0|1    : Build OpenJpeg command line tools              [0]
+                          (requires JPEG, PNG and TIFF libraries)""")
 excons.DeclareTargets(env, prjs)
 
 Export("OpenjpegName OpenjpegPath RequireOpenjpeg")
-
