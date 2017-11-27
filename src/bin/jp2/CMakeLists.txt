@@ -44,6 +44,9 @@ endif()
 # Loop over all executables:
 foreach(exe opj_decompress opj_compress opj_dump)
   add_executable(${exe} ${exe}.c ${common_SRCS})
+  if(${CMAKE_VERSION} VERSION_GREATER "2.8.11")
+    target_compile_options(${exe} PRIVATE ${OPENJP2_COMPILE_OPTIONS})
+  endif()
   target_link_libraries(${exe} ${OPENJPEG_LIBRARY_NAME}
     ${PNG_LIBNAME} ${TIFF_LIBNAME} ${LCMS_LIBNAME}
     )
@@ -63,6 +66,9 @@ foreach(exe opj_decompress opj_compress opj_dump)
       else()
         set_target_properties(${exe} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
       endif()
+    endif()
+    IF("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+      target_link_libraries(${exe} rt)
     endif()
   endif()
   # Install exe
