@@ -1,6 +1,6 @@
 import sys
 import excons
-import SCons.Script
+import SCons.Script # pylint: disable=import-error
 
 env = excons.MakeBaseEnv()
 

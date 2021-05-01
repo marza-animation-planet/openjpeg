@@ -69,7 +69,7 @@ if(UNIX AND BUILD_SHARED_LIBS)
 endif()
 set_target_properties(openjpip
   PROPERTIES ${OPENJPEG_LIBRARY_PROPERTIES})
-if(${CMAKE_VERSION} VERSION_GREATER "2.8.11")
+if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.12")
   target_compile_options(openjpip PRIVATE ${OPENJPEG_LIBRARY_COMPILE_OPTIONS})
 endif()
 target_link_libraries(openjpip ${OPENJPEG_LIBRARY_NAME})
