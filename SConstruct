@@ -1,5 +1,6 @@
 import sys
 import excons
+import SCons.Script
 
 env = excons.MakeBaseEnv()
 
@@ -63,4 +64,4 @@ excons.AddHelpOptions(openjpeg="""OPENJPEG OPTIONS
                           (requires JPEG, PNG and TIFF libraries)""")
 excons.DeclareTargets(env, prjs)
 
-Export("OpenjpegName OpenjpegPath RequireOpenjpeg")
+SCons.Script.Export("OpenjpegName OpenjpegPath RequireOpenjpeg")
