@@ -50,9 +50,9 @@ prjs = [
                      "BUILD_VIEWER": 0},
       "cmake-cfgs": excons.CollectFiles(["src/bin/common", "src/bin/jp2", "src/lib/openjp2"], patterns=["CMakeLists.txt"]),
       "cmake-srcs": excons.CollectFiles(["src/bin/common", "src/bin/jp2", "src/lib/openjp2"], patterns=["*.c"]),
-      "cmake-outputs": ["include/openjpeg-2.3/openjpeg.h",
-                        "include/openjpeg-2.3/opj_config.h",
-                        "include/openjpeg-2.3/opj_stdint.h",
+      "cmake-outputs": ["include/openjpeg-2.4/openjpeg.h",
+                        "include/openjpeg-2.4/opj_config.h",
+                        "include/openjpeg-2.4/opj_stdint.h",
                         OpenjpegPath()]
    }
 ]
