@@ -7,13 +7,12 @@ env = excons.MakeBaseEnv()
 out_incdir  = excons.OutputBaseDirectory() + "/include"
 out_libdir  = excons.OutputBaseDirectory() + "/lib"
 staticbuild = (excons.GetArgument("openjpeg-static", 1, int) != 0)
-libsuffix = excons.GetArgument("openjpeg-suffix", "")
 
 def OpenjpegName():
-   name = "openjp2" + libsuffix
-   if sys.platform == "win32" and staticbuild:
-       name = "lib" + name
-   return name
+   # on linux, if both static and shared libraries
+   #   are built at the same time, cmake scripts will add a _static suffix to the static library name
+   # we setup cmake below to always only built one of the two
+   return "openjp2"
 
 def OpenjpegPath():
    name = OpenjpegName()
@@ -42,7 +41,8 @@ prjs = [
                      "OPJ_USE_DSYMUTIL": 0,
                      "BUILD_LUTS_GENERATOR": 0,
                      "BUILD_BENCH_DWT": 0,
-                     "BUILD_SHARED_LIBS": (1 if not staticbuild else 0),
+                     "BUILD_SHARED_LIBS": (0 if staticbuild else 1),
+                     "BUILD_STATIC_LIBS": (1 if staticbuild else 0),
                      "BUILD_PKGCONFIG_FILES": 0,
                      "BUILD_TESTING": 0,
                      "BUILD_CODEC": excons.GetArgument("openjpeg-tools", 0, int),
